@@ -10,15 +10,36 @@ $(document).ready(function() {
     addQuote(quote);
   });
 
-  function getQuote(){
+  $('#get').click((e) => {
+    e.preventDefault();
+    let $node = $('<div>');
+    let $p = $('<p>');
+
+    getQuote(quote => { 
+      $p.text(quote);
+      $node.append($p);
+      $('body').append($node); 
+    });
+
+  });
+
+  function getQuote(cb){
 
     //YOUR CODE HERE, Add a GET request
+    $.ajax('http://localhost:3000/quote/', {
+      type: 'GET',
+      success: (data) => { cb(data); }
+    });
 
   }
 
   function addQuote(quote){
     
     //YOUR CODE HERE, Add a POST request
-
+    $.ajax('http://localhost:3000/add', {
+      type: 'POST',
+      data: quote,
+      success: () => { console.log('quote posted'); }
+    });
   }
 });
